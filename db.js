@@ -1,12 +1,11 @@
 const { Pool } = require('pg');
+require('dotenv').config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Render cung cấp biến môi trường này
+  connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false, // bắt buộc khi dùng Render
-  },
+    rejectUnauthorized: false // render yêu cầu ssl
+  }
 });
 
-module.exports = {
-  query: (text, params) => pool.query(text, params),
-};
+module.exports = pool;
