@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Danh sách người dùng</title>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>📋 Danh sách người dùng</h1>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    // Gọi API để lấy danh sách user
+    fetch('https://lab3-dtdm-mr.onrender.com/api/users')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector('#userTable tbody');
+        if (data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3">Không có dữ liệu.</td></tr>';
+          return;
+        }
+
+        data.forEach(user => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${user.id || ''}</td>
+            <td>${user.name || ''}</td>
+            <td>${user.email || ''}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error('Lỗi lấy dữ liệu:', error);
+        document.querySelector('#userTable tbody').innerHTML =
+          '<tr><td colspan="3">Lỗi khi lấy dữ liệu người dùng.</td></tr>';
+      });
+  </script>
+</body>
+</html>
